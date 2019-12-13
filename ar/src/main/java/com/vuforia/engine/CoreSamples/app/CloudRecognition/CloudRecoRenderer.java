@@ -13,17 +13,19 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 
+import com.vuforia.CloudRecoSearchResult;
 import com.vuforia.Device;
 import com.vuforia.ImageTargetResult;
 import com.vuforia.Matrix44F;
 import com.vuforia.Renderer;
 import com.vuforia.State;
 import com.vuforia.TargetFinder;
+import com.vuforia.TargetFinderQueryResult;
+import com.vuforia.TargetSearchResult;
 import com.vuforia.Tool;
 import com.vuforia.TrackableResult;
 import com.vuforia.TrackableResultList;
 import com.vuforia.Vuforia;
-import com.vuforia.engine.CoreSamples.R;
 import com.vuforia.engine.SampleApplication.SampleAppRenderer;
 import com.vuforia.engine.SampleApplication.SampleAppRendererControl;
 import com.vuforia.engine.SampleApplication.SampleApplicationSession;
@@ -33,16 +35,10 @@ import com.vuforia.engine.SampleApplication.utils.SampleUtils;
 import com.vuforia.engine.SampleApplication.utils.Teapot;
 import com.vuforia.engine.SampleApplication.utils.Texture;
 
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Vector;
-import java.util.concurrent.ThreadLocalRandom;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
-
-import android.media.MediaPlayer;
 
 import static android.opengl.GLES20.GL_BLEND;
 import static android.opengl.GLES20.GL_ONE_MINUS_SRC_ALPHA;
@@ -57,9 +53,6 @@ import static android.opengl.GLES20.glEnable;
  * In the renderFrame() function you can render augmentations to display over the Target
  */
 public class CloudRecoRenderer implements GLSurfaceView.Renderer, SampleAppRendererControl {
-    MediaPlayer mPlayer;
-
-
     private final SampleApplicationSession vuforiaAppSession;
     private final SampleAppRenderer mSampleAppRenderer;
 
@@ -80,9 +73,8 @@ public class CloudRecoRenderer implements GLSurfaceView.Renderer, SampleAppRende
     private final CloudReco mActivity;
 
     private boolean mIsActive = false;
-    public static boolean flag = false;
+
     public static String metaData;
-    public static int textureIndex;
 
     CloudRecoRenderer(SampleApplicationSession session, CloudReco activity) {
         vuforiaAppSession = session;
@@ -92,7 +84,6 @@ public class CloudRecoRenderer implements GLSurfaceView.Renderer, SampleAppRende
         // the device mode AR/VR and stereo mode
         mSampleAppRenderer = new SampleAppRenderer(this, mActivity, Device.MODE.MODE_AR,
                 false, 0.010f, 5f);
-
     }
 
 
@@ -140,6 +131,7 @@ public class CloudRecoRenderer implements GLSurfaceView.Renderer, SampleAppRende
         // Define clear color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, Vuforia.requiresAlpha() ? 0.0f
                 : 1.0f);
+
         for (Texture t : mTextures) {
             GLES20.glGenTextures(1, t.mTextureID, 0);
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, t.mTextureID[0]);
@@ -234,21 +226,8 @@ public class CloudRecoRenderer implements GLSurfaceView.Renderer, SampleAppRende
     }
 
 
-
     private void renderModel(float[] projectionMatrix, float[] viewMatrix, float[] modelMatrix, String metaData) {
-        if (!flag) {
-            mPlayer = MediaPlayer.create(mActivity.getApplicationContext(), CloudReco.audioRes.get(textureIndex));
-            mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    mPlayer.stop();
-                }
-            });
-            mPlayer.start();
-            flag = true;
-        }
-
-
+        int textureIndex = Integer.parseInt(metaData);
         System.out.println(metaData);
 
         float[] modelViewProjection = new float[16];

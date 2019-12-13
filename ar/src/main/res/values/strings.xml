@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">AR Pirates</string>
-    <string name="app_description">Vuforia Engine AR philosophy</string>
+    <string name="app_name">Vuforia Engine Samples</string>
+    <string name="app_description">Vuforia Engine Sample Applications</string>
 
     <string name="version_vuforia">Vuforia Engine v</string>
     <string name="version_android">Android API level</string>

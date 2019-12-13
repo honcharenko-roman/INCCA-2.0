@@ -35,10 +35,10 @@ public class Teapot extends MeshObject {
 
     private void setVerts() {
         double[] TEAPOT_VERTS = {
-                -100.130548f, -0.0f, -90.0001f,
-                100.130548f, -0.0f, -90.0001f,
-                100.130548f, 0.0f, 90.0001f,
-                -100.130548f, 0.0f, 90.0001f};
+                -50.130548f, -30.0f, 0.0001f,
+                50.130548f, -30.0f, 0.0001f,
+                50.130548f, 30.0f, 0.0001f,
+                -50.130548f, 30.0f, 0.0001f};
         mVertBuff = fillBuffer(TEAPOT_VERTS);
         verticesNumber = TEAPOT_VERTS.length / 3;
     }

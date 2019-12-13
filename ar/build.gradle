@@ -13,8 +13,9 @@ android {
 
     defaultConfig {
         applicationId "com.vuforia.engine.CoreSamples"
-        minSdkVersion 8
+        minSdkVersion 14
         targetSdkVersion 27
+        versionCode 800
         versionCode 800
         versionName "8.0"
 
@@ -45,11 +46,7 @@ android {
 }
 
 dependencies {
-    implementation files('C:\\Users\\yunha\\Downloads\\vuforia-sdk-android-8-6-7_0\\build\\java\\Vuforia\\Vuforia.jar')
+    implementation files("$VUFORIA_SDK_DIR/build/java/Vuforia/Vuforia.jar")
+    // ARCore library
+//    implementation 'com.google.ar:core:1.4.0'
 }
-
-
-
-
-
-

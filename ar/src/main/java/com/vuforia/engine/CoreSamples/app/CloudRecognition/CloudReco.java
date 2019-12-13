@@ -15,7 +15,6 @@ import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.hardware.camera2.CameraDevice;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -29,27 +28,31 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import com.vuforia.CameraDevice;
+import com.vuforia.ObjectTracker;
+import com.vuforia.PositionalDeviceTracker;
 import com.vuforia.State;
 import com.vuforia.TargetFinder;
+import com.vuforia.TargetSearchResult;
+import com.vuforia.CloudRecoSearchResult;
+import com.vuforia.TargetFinderQueryResult;
+import com.vuforia.TargetSearchResultList;
+import com.vuforia.TrackableResult;
+import com.vuforia.Tracker;
+import com.vuforia.TrackerManager;
 import com.vuforia.Vuforia;
-import com.vuforia.engine.CoreSamples.R;
 import com.vuforia.engine.CoreSamples.ui.SampleAppMessage;
+import com.vuforia.engine.SampleApplication.utils.SampleAppTimer;
 import com.vuforia.engine.SampleApplication.SampleApplicationControl;
 import com.vuforia.engine.SampleApplication.SampleApplicationException;
 import com.vuforia.engine.SampleApplication.SampleApplicationSession;
 import com.vuforia.engine.SampleApplication.utils.LoadingDialogHandler;
-import com.vuforia.engine.SampleApplication.utils.SampleAppTimer;
 import com.vuforia.engine.SampleApplication.utils.SampleApplicationGLView;
 import com.vuforia.engine.SampleApplication.utils.Texture;
+import com.vuforia.engine.CoreSamples.R;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Vector;
-
-import static com.vuforia.engine.CoreSamples.app.CloudRecognition.CloudRecoRenderer.textureIndex;
 
 
 /**
@@ -100,12 +103,11 @@ public class CloudReco extends Activity implements SampleApplicationControl
 
     // The textures we will use for rendering:
     private Vector<Texture> mTextures;
-    public static List<Integer> audioRes;
 
     // The keys necessary in order to use Cloud Recognition
     // Generate your own keys via the Target Manager on the Vuforia developer website
-    private static final String kAccessKey = "bab7bec36a1f28e1eae89c34a4d03e6e60d4aa10";
-    private static final String kSecretKey = "f1ef49621c4a8f05eb11040f78fdd7f886253dcd";
+    private static final String kAccessKey = "5db5f62b72fcfed31111e00a03acf68cf1ba3440";
+    private static final String kSecretKey = "a95abbcf3ffb2561b8ca73067dfff502393e5817";
 
     // View overlays to be displayed in the Augmented View
     private RelativeLayout mUILayout;
@@ -136,8 +138,7 @@ public class CloudReco extends Activity implements SampleApplicationControl
     // for targets using an internet connection
     private TargetFinder mTargetFinder;
 
-    Timer timer = new Timer();
-    Random randomGenerator = new Random();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOGTAG, "onCreate");
@@ -146,18 +147,6 @@ public class CloudReco extends Activity implements SampleApplicationControl
         vuforiaAppSession = new SampleApplicationSession(this);
 
         startLoadingAnimation();
-        timer.schedule(new TimerTask() {
-
-            @Override
-            public void run() {
-                CloudRecoRenderer.flag = false;
-                if(textureIndex < 10) {
-                    textureIndex++;//
-                } else {
-                    textureIndex = 0 ;//randomGenerator.nextInt(11) + 0;
-                }
-            }
-        }, 20000, 20000);
 
         vuforiaAppSession
                 .initAR(this, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -182,8 +171,6 @@ public class CloudReco extends Activity implements SampleApplicationControl
 
                 super.onFinish();
             }
-
-
         };
 
         mStatusDelayTimer = new SampleAppTimer(1000, 1000) {
@@ -203,11 +190,6 @@ public class CloudReco extends Activity implements SampleApplicationControl
                 super.onFinish();
             }
         };
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 
 
@@ -248,40 +230,29 @@ public class CloudReco extends Activity implements SampleApplicationControl
 
     // Load specific textures from the APK, which we will later use for rendering.
     private void loadTextures() {
-        audioRes = new ArrayList<Integer>();
-        mTextures.add(Texture.loadTextureFromApk("jpg1.png",
+        mTextures.add(Texture.loadTextureFromApk("old1.png",
                 getAssets()));
-        audioRes.add(R.raw.audio1);
-        mTextures.add(Texture.loadTextureFromApk("jpg2.png",
+        mTextures.add(Texture.loadTextureFromApk("old2.png",
                 getAssets()));
-        audioRes.add(R.raw.audio2);
-        mTextures.add(Texture.loadTextureFromApk("jpg3.png",
+        mTextures.add(Texture.loadTextureFromApk("old3.png",
                 getAssets()));
-        audioRes.add(R.raw.audio3);
-        mTextures.add(Texture.loadTextureFromApk("jpg4.png",
+        mTextures.add(Texture.loadTextureFromApk("old4.png",
                 getAssets()));
-        audioRes.add(R.raw.audio4);
-        mTextures.add(Texture.loadTextureFromApk("jpg5.png",
+        mTextures.add(Texture.loadTextureFromApk("old5.png",
                 getAssets()));
-        audioRes.add(R.raw.audio5);
-        mTextures.add(Texture.loadTextureFromApk("jpg6.png",
+        mTextures.add(Texture.loadTextureFromApk("old6.png",
                 getAssets()));
-        audioRes.add(R.raw.audio6);
-        mTextures.add(Texture.loadTextureFromApk("jpg7.png",
+        mTextures.add(Texture.loadTextureFromApk("old7.png",
                 getAssets()));
-        audioRes.add(R.raw.audio7);
-        mTextures.add(Texture.loadTextureFromApk("jpg8.png",
+        mTextures.add(Texture.loadTextureFromApk("old8.png",
                 getAssets()));
-        audioRes.add(R.raw.audio8);
-        mTextures.add(Texture.loadTextureFromApk("jpg9.png",
+        mTextures.add(Texture.loadTextureFromApk("old9.png",
                 getAssets()));
-        audioRes.add(R.raw.audio9);
-        mTextures.add(Texture.loadTextureFromApk("jpg10.png",
+        mTextures.add(Texture.loadTextureFromApk("old10.png",
                 getAssets()));
-        audioRes.add(R.raw.audio10);
-        mTextures.add(Texture.loadTextureFromApk("jpg5.png",
+        mTextures.add(Texture.loadTextureFromApk("old11.png",
                 getAssets()));
-        audioRes.add(R.raw.audio11);
+
     }
 
 
