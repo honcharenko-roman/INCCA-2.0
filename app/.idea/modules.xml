@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/app.iml" filepath="$PROJECT_DIR$/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../app-quiz/app-quiz.iml" filepath="$PROJECT_DIR$/../app-quiz/app-quiz.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../ar/ar.iml" filepath="$PROJECT_DIR$/../ar/ar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../multy-modulePhylApp.iml" filepath="$PROJECT_DIR$/../multy-modulePhylApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../phylsApp/phylsApp.iml" filepath="$PROJECT_DIR$/../phylsApp/phylsApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../uiz/uiz.iml" filepath="$PROJECT_DIR$/../uiz/uiz.iml" />
+    </modules>
+  </component>
+</project>
