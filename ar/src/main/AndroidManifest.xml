@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.vuforia.engine.CoreSamples" >
+    package="com.vuforia.incca.CoreSamples" >
 
     <uses-feature android:glEsVersion="0x00020000" />
 
@@ -78,7 +78,7 @@
         -->
         
         <activity
-            android:name="com.vuforia.engine.CoreSamples.app.CloudRecognition.CloudReco"
+            android:name="com.vuforia.incca.CoreSamples.app.CloudRecognition.CloudReco"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize"
             android:theme="@style/SampleAppsTheme"
             android:launchMode="singleTask"

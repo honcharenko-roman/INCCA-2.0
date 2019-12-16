@@ -12,7 +12,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.vuforia.engine.CoreSamples"
+        applicationId "com.vuforia.incca.CoreSamples"
         minSdkVersion 14
         targetSdkVersion 27
         versionCode 800

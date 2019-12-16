@@ -18,10 +18,9 @@
     <customfonts.MyTextView1
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="46dp"
         android:layout_marginLeft="10dp"
         android:background="#00FFFFFF"
-        android:textColor="#FFFFFF"
-        android:textSize="18dp" />
+        android:textColor="#FFFFFF" />
 
 </LinearLayout>
